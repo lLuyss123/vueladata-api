@@ -3,6 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.causa import Causa
+from app.routers.causa import router as causas_router
 
 
 app = FastAPI(
@@ -11,14 +12,11 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# endpoint temporal para verificar la db
-@app.get("/debug/causas")
-def debug_causas(db: Session = Depends(get_db)):
-    return [c.codigo for c in db.query(Causa).all()]
+
+app.include_router(causas_router) 
 
 @app.get("/health")
 def health():
-    # Solo confirma que la API está viva (no toca la BD)
     return {"status": "ok"}
 
 
