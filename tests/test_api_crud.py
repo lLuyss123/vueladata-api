@@ -137,8 +137,8 @@ def test_crud_regla_compensacion_lifecycle():
 
 def test_error_404_on_nonexistent_resource():
     """Valida que registros inexistentes retornen código 404 y un mensaje claro."""
-    # Causa inexistente
-    r_causa = client.get("/causas/999999")
+    # Causa inexistente (id dentro del rango de SMALLINT pero que no existe)
+    r_causa = client.get("/causas/32000")
     assert r_causa.status_code == 404
     assert "no fue encontrada" in r_causa.json()["detail"]
 
