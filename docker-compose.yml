@@ -4,7 +4,7 @@ services:
     container_name: vueladata_pg_dev
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-NanoEmprende.2}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB:-vueladata_db}
     ports:
       - "5433:5432"
@@ -24,7 +24,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-NanoEmprende.2}@postgres:5432/${POSTGRES_DB:-vueladata_db}
+      - DATABASE_URL=postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-vueladata_db}
     depends_on:
       postgres:
         condition: service_healthy
