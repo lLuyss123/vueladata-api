@@ -1,26 +1,22 @@
-# Python y entornos virtuales
-__pycache__/
-*.py[cod]
-*$py.class
-.venv/
-env/
-venv/
-
-# Variables de entorno y secretos
-.env
-*.env
-
-# Pruebas y linters
-.pytest_cache/
-.ruff_cache/
-tests/
-htmlcov/
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
 .coverage
-
-# Git y metadata
-.git/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.pytest_cache
+.git
 .gitignore
+.env
+data/
 
-# Documentación y otros
-*.md
-chat.txt

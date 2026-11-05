@@ -1,0 +1,36 @@
+{
+  "family": "vueladata-fastapi-backend-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/vueladata-fastapi-backend-role",
+  "containerDefinitions": [
+    {
+      "name": "fastapi-backend",
+      "image": "<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/vueladata/backend-workers:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "hostPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "command": ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"],
+      "environment": [
+        {"name": "DATABASE_URL", "value": "postgresql+psycopg://postgres:<PASSWORD>@<RDS_ENDPOINT>:5432/vueladata"}
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/vueladata-fastapi-backend",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "fastapi"
+        }
+      }
+    }
+  ]
+}
+

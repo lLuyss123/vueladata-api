@@ -1,0 +1,39 @@
+{
+  "family": "vueladata-worker-lake-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/vueladata-worker-lake-role",
+  "containerDefinitions": [
+    {
+      "name": "worker-lake",
+      "image": "<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/vueladata/backend-workers:latest",
+      "essential": true,
+      "command": ["python", "-m", "worker_lake.main"],
+      "environment": [
+        {"name": "RABBITMQ_HOST", "value": "rabbitmq.vueladata.local"},
+        {"name": "RABBITMQ_PORT", "value": "5672"},
+        {"name": "RABBITMQ_USER", "value": "admin"},
+        {"name": "RABBITMQ_PASS", "value": "admin123"},
+        {"name": "QUEUE_LAKE", "value": "q.lake_writer"},
+        {"name": "PREFETCH_COUNT", "value": "100"},
+        {"name": "AWS_REGION", "value": "us-east-1"},
+        {"name": "S3_BUCKET_BRONZE", "value": "vueladata-datalake-bronze"},
+        {"name": "LAKE_FLUSH_EVERY_N", "value": "50"},
+        {"name": "LAKE_FLUSH_EVERY_SECONDS", "value": "60"},
+        {"name": "LOCAL_LAKE_FALLBACK", "value": "false"}
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/vueladata-worker-lake",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "worker-lake"
+        }
+      }
+    }
+  ]
+}
+
